@@ -39,17 +39,17 @@ _xnotify()  { notify-send -i display "x setup:" "autorandr: $(_pr_autor) \nxrand
 
 # xoff
 
-_xoff()     { xrandr --output $1 --off; }
+_xoff()             { xrandr --output $1 --off; }
 
-_xoff_lp()  { for disp in $1; do _xoff $disp; done }
+_xoff_lp()          { for disp in $1; do _xoff $disp; done }
 
-_xoff_lp_all() { for disp in $xlist_connected; do _xoff $disp; done }
+_xoff_lp_all()      { for disp in $xlist_connected; do _xoff $disp; done }
 
-_xoff_lp_partial() { for disp in ${xlist_off[@]}; do _xoff $disp; done }
+_xoff_lp_partial()  { for disp in ${xlist_off[@]}; do _xoff $disp; done }
 
 _xoff_set_partial() { for i in $xlist_connected; do [ -n "$(echo "$@" | grep " $i")" ] || { xlist_off+=("$i"); }; done }
 
-_xoff_partial() { _xoff_set_partial "$@"; _xoff_lp_partial; }
+_xoff_partial()     { _xoff_set_partial "$@"; _xoff_lp_partial; }
 
 
 # reload
@@ -139,6 +139,9 @@ _init_defs() {
   d_23__d_22p=(
     "${d_23[@]}"    "--left-of"  "DP-2-2"
     "${d_22[@]}"    "--primary")
+  d_23p__d_22=(
+    "${d_23[@]}"    "--primary"
+    "${d_23[@]}"    "--right-of"  "DP-2-3")
   d_23p__d_22r__e1b=(
     "${d_23[@]}"    "--primary"
     "${d_22[@]}"    "--right-of"  "DP-2-3"
