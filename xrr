@@ -5,7 +5,7 @@ shift 1
 
 # VARS ######################################
 
-winman="${HOME}/.local/bin/i3s"
+winman="i3s"
 
 xlist=( 
   "eDP-1"
@@ -26,15 +26,15 @@ xlist_connected="$(xrandr | grep " connected" | cut -d" " -f1)"
 
 # BASICS ####################################
 
-_pr_active() { xrandr --listactivemonitors; }
+_pr_active()    { xrandr --listactivemonitors; }
 
-_pr_autor()  { autorandr --current; }
+_pr_autor()     { autorandr --current; }
 
 _xresize_wins() { $winman win.resize.all; }
 
-_xfeh_bg()  { feh --bg-max "${HOME}/.local/share/abg/bg.jpg" & }
+_xfeh_bg()      { feh --no-fehbg --bg-max "${HOME}/.local/share/abg/bg.jpg" & }
 
-_xnotify()  { notify-send -i display "x setup:" "autorandr: $(_pr_autor) \nxrandr:\n $(_pr_active)" & }
+_xnotify()      { notify-send -i display "x setup:" "autorandr: $(_pr_autor) \nxrandr:\n $(_pr_active)" & }
 
 
 # xoff
@@ -192,8 +192,8 @@ case $cmd in
 	#xrrx)        xrrx $@ ;;
 	off)         _xrroff ;;
 	reload)      _xreload ;;
-  xr)          _xrra $@ ;;
-  xrm_fix)     _xrm_fix ;;
+    xr)          _xrra $@ ;;
+    xrm_fix)     _xrm_fix ;;
 esac
 
 exit
@@ -201,3 +201,4 @@ exit
 # archive ################################
 xrandr --output VGA-1 --primary --auto --output LVDS-1 --off --auto
 xrandr --output LVDS-1 --primary --auto --output VGA-1 --off
+

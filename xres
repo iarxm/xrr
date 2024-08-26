@@ -4,26 +4,20 @@
 # 	- Setting X color/theme settings
 # 	- Testing colors
 # =======================================
-cmd=$1
-shift 1
+
+cmd=$1 && shift 1
+
 
 col_set() {
+
 	fil="$1"
 	printf "#include \"X11/col/$fil\"" > $HOME/.config/X11/col.set
-	xrdb -I${XDG_CONFIG_HOME:-$HOME} .config/X11/xresources
-}
+	xrdb -I${XDG_CONFIG_HOME:-$HOME} .config/X11/xresources ;}
 
-case $cmd in 
-	set)
-		col_set $@
-	
-	;;
 
-esac
 
-######################################
+
 # COLOR TESTING #######################
-
 
 
 spaceinvade() {
@@ -68,14 +62,18 @@ EOF
 
 }
 
+
 full256() {
+
 	(x=`tput op` y=`printf %76s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done)
 }
 
-# CASES #############################
-case $cmd in
-	spaceinvade) spaceinvade() ;;
-	256) full256() ;;
-esac
 
+# CASES #############################
+
+case $cmd in
+	spaceinvade) spaceinvade ;;
+	256)         full256 ;;
+    set)         col_set $@ ;;
+esac
 
