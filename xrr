@@ -30,7 +30,7 @@ _pr_active()    { xrandr --listactivemonitors; }
 
 _pr_autor()     { autorandr --current; }
 
-_xresize_wins() { $winman win.resize.all; }
+_xresize_wins() { $winman r; }
 
 _xfeh_bg()      { feh --no-fehbg --bg-max "${HOME}/.local/share/abg/bg.jpg" & }
 
