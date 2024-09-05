@@ -188,12 +188,12 @@ _xrra() { # $1 is cmd seq
 # Run ####################################
 
 case $cmd in 
-	#xrra)        xrra $@ ;;
-	#xrrx)        xrrx $@ ;;
-	off)         _xrroff ;;
-	reload)      _xreload ;;
-    xr)          _xrra $@ ;;
-    xrm_fix)     _xrm_fix ;;
+    #xrra)        xrra $@ ;;
+    #xrrx)        xrrx $@ ;;
+    o|off)         _xrroff ;;
+    r|reload)      _xreload ;;
+    x|xr)          _xrra $@ ;;
+    f|xrm_fix)     _xrm_fix ;;
 esac
 
 exit
