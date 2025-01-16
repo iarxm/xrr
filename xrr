@@ -30,12 +30,6 @@ _pr_active()    { xrandr --listactivemonitors; }
 
 _pr_autor()     { autorandr --current; }
 
-_xresize_wins() { $winman r; }
-
-_xfeh_bg()      { feh --no-fehbg --bg-max "${BGX_FEH}" & }
-
-_xnotify()      { notify-send -i display "x setup:" "autorandr: $(_pr_autor) \nxrandr:\n $(_pr_active)" & }
-
 
 # xoff
 
@@ -47,18 +41,32 @@ _xoff_lp_all()      { for disp in $xlist_connected; do _xoff $disp; done }
 
 _xoff_lp_partial()  { for disp in ${xlist_off[@]}; do _xoff $disp; done }
 
-_xoff_set_partial() { for i in $xlist_connected; do [ -n "$(echo "$@" | grep " $i")" ] || { xlist_off+=("$i"); }; done }
+_xoff_set_partial() {
+    for i in $xlist_connected; do 
+        [ -n "$(echo "$@" | grep " $i")" ] \
+            || { xlist_off+=("$i"); }
+    done }
 
 _xoff_partial()     { _xoff_set_partial "$@"; _xoff_lp_partial; }
 
 
 # reload
 
-_xreload() { # todo: add i3 conditional statement
-  _xfeh_bg
-  _xnotify
-  _xresize_wins ;}
+_xinit() {
+  
+  # todo: add i3 conditional statement
+  feh --no-fehbg --bg-max "${BGX_FEH}" &
+  
+  xset r rate 120 120 &
+  
+  notify-send -i display \
+        "x setup:" "autorandr: $(_pr_autor) \nxrandr:\n $(_pr_active)" &
+}
 
+_xreload() {
+    _xinit
+    $winman r # resize wins
+}
 
 # MODES ##################################
 
@@ -202,6 +210,7 @@ case $cmd in
     #xrra)        xrra $@ ;;
     #xrrx)        xrrx $@ ;;
     o|off)         _xrroff ;;
+    i|init)        _xinit ;;
     r|reload)      _xreload ;;
     x|xr)          _xrra $@ ;;
     f|xrm_fix)     _xrm_fix ;;
