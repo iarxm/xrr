@@ -24,51 +24,49 @@ xlist=(
 xlist_connected="$(xrandr | grep " connected" | cut -d" " -f1)"
 
 
-# BASICS ####################################
 
-_pr_active()    { xrandr --listactivemonitors; }
+pr_active()    { xrandr --listactivemonitors; }
 
-_pr_autor()     { autorandr --current; }
+pr_autor()     { autorandr --current; }
 
 
-# xoff
 
-_xoff()             { xrandr --output $1 --off; }
+xoff()             { xrandr --output $1 --off; }
 
-_xoff_lp()          { for disp in $1; do _xoff $disp; done }
+xoff_lp()          { for disp in $1; do xoff $disp; done }
 
-_xoff_lp_all()      { for disp in $xlist_connected; do _xoff $disp; done }
+xoff_lp_all()      { for disp in $xlist_connected; do xoff $disp; done }
 
-_xoff_lp_partial()  { for disp in ${xlist_off[@]}; do _xoff $disp; done }
+xoff_lp_partial()  { for disp in ${xlist_off[@]}; do xoff $disp; done }
 
-_xoff_set_partial() {
+xoff_set_partial() {
     for i in $xlist_connected; do 
         [ -n "$(echo "$@" | grep " $i")" ] \
             || { xlist_off+=("$i"); }
     done }
 
-_xoff_partial()     { _xoff_set_partial "$@"; _xoff_lp_partial; }
-
+xoff_partial()     { xoff_set_partial "$@"; xoff_lp_partial; }
+  
+xsetx()            { xset r rate 120 120 & }
 
 # reload
 
-_xinit() {
+xinit() {
+    # todo: add i3 conditional statement
+    feh --no-fehbg --bg-max "${BGX_FEH}" &
+    xsetx
   
-  # todo: add i3 conditional statement
-  feh --no-fehbg --bg-max "${BGX_FEH}" &
-  
-  xset r rate 120 120 &
-  
-  notify-send -i display \
-        "x setup:" "autorandr: $(_pr_autor) \nxrandr:\n $(_pr_active)" &
+    notify-send -i display \
+        "x setup:" "autorandr: $(pr_autor) \nxrandr:\n $(pr_active)" &
 }
 
-_xreload() {
-    _xinit
+xreload() {
+    xinit
     $winman r # resize wins
 }
 
-# MODES ##################################
+
+# modes
 
 # NOTE: dissapearing modelines previously have been associated with cable issues
 #   - Re-attaching the cable restablishes the correct default modelines
@@ -76,46 +74,46 @@ _xreload() {
 
 # to generate modeline for eg 1920x1080 @ 60 : 'cvt 1920 1080 60'
 
-_xrm_1920_1080_65() {
-	xrandr --newmode "1920x1080_65.00" 188.87  \
-			1920 2048 2256 2592  \
-			1080 1081 1084 1121 -HSync +Vsync
+xrm_1920_1080_65() {
+   xrandr --newmode "1920x1080_65.00" 188.87  \
+         1920 2048 2256 2592  \
+         1080 1081 1084 1121 -HSync +Vsync
 }
 
-_xrm_1920_1080_60() { #outp="DP-2"
-	xrandr --newmode "1920x1080_60.00" 172.80 \
-			1920 2040 2248 2576 \
-			1080 1081 1084 1118 -HSync +Vsync
+xrm_1920_1080_60() { #outp="DP-2"
+   xrandr --newmode "1920x1080_60.00" 172.80 \
+         1920 2040 2248 2576 \
+         1080 1081 1084 1118 -HSync +Vsync
 }
 
-_xrm_add_dp-2-3() {
+xrm_add_dp-2-3() {
   xrandr --addmode DP-2-3 "1920x1080_60.00"
   xrandr --output DP-2-3 --mode "1920x1080_60.00"
 }
 
-_xrm_add_dp-2() {
+xrm_add_dp-2() {
   #xrandr --addmode DP-2 "1920x1080_60.00"
   xrandr --addmode DP-2 "1024x768_60.00"
   xrandr --output DP-2 --mode "1024x768_60.00"
 }
 
-_xrm_fix_2() {
-  _xrm_1920_1080_60
-  _xrm_1920_1080_65
-  _xrm_add_dp-2-3 ;}
+xrm_fix_2() {
+ xrm_1920_1080_60
+ xrm_1920_1080_65
+ xrm_add_dp-2-3 ;}
 
-_xrm_fix() {
-  _xrm_1920_1080_60
-  _xrm_1920_1080_65
-  _xrm_add_dp-2 ;}
+xrm_fix() {
+ xrm_1920_1080_60
+ xrm_1920_1080_65
+ xrm_add_dp-2 ;}
  
 #xrm_add_() { --addmode $outp $reso ;}
 
-# SETUPS ################################
 
-_init_defs() {
+
+init_defs() {
   
-  # singles base ##############################
+  # singles & bases
   
   e1=(     "--output"    "eDP-1"  "--auto" )
   e1p=(    "${e1[@]}"    "--primary" )
@@ -145,16 +143,16 @@ _init_defs() {
   h2p=(    "${h2[@]}"    "--primary" )
 
 
-  # doubles  ##################################
+  # doubles
   
-  # _2 ######################################
+  #2
   e1p__d_2=(     
     "${e1[@]}"      "--primary"
     "${d_2[@]}"     "--right-of" )
   h1p_e1r=(
     "${h1[@]}"      "--primary"
     "${e1[@]}"      "--right-of")
-  # _23 - _22 - ...  #######################
+  #23 -22 - ...  #######################
   d_23__d_22p=(
     "${d_23[@]}"    "--left-of"  "DP-2-2"
     "${d_22[@]}"    "--primary")
@@ -165,60 +163,60 @@ _init_defs() {
     "${d_23[@]}"    "--primary"
     "${d_22[@]}"    "--right-of"  "DP-2-3"
     "${e1[@]}"      "--below"     "DP-2-2")
-  # _22 - _23 - ... ######################
+  #22 -23 - ... ######################
   d_22p__d_23=(  
     "${d_22[@]}"    "--primay"
     "${d_23[@]}"    "--right-of")
-  # _22 - _1 - ... #######################
+  #22 -1 - ... #######################
   d_22r__d_1p=(
     "${d_22r[@]}"   "--left-of"  "DP-1"
     "${d_1[@]}"     "--primary")
   d_22r__d_1p__d_22r=(
     "${d_22r__d_1p[@]}"
     "${d_23r[@]}"  "--right-of" "DP-1")
-  # _1 - _23 - .... ########################
+  #1 -23 - .... ########################
   d_1pr__d_23r=(  # 2 rot
     "${d_1r[@]}"    "--primary"
     "${d_23r[@]}"   "--right-of" "DP-1")
   d_1p__d_23rl=(  
     "${d_1[@]}"     "--primary"
     "${d_22r[@]}"   "--right-of" "DP-1" )
-  
-} # END ######################################
-
-
-# CMDS ##################################################
-
-_xcmd_set() {
-  _init_defs
-  eval "args=(\"\${${1}[@]}\")"
-  xcmd="xrandr ${args[@]}";}
-
-_xcmd_exec() { $xcmd; }
-
-_xrra() { # $1 is cmd seq
-  _xcmd_set $1
-  _xcmd_exec
-  _xoff_partial "$xcmd"
-  _xreload
 }
 
 
-# Run ####################################
+# cmds
+
+xcmd_set() {
+ init_defs
+  eval "args=(\"\${${1}[@]}\")"
+  xcmd="xrandr ${args[@]}";}
+
+xcmd_exec() { $xcmd; }
+
+xrra() { # $1 is cmd seq
+ xcmd_set $1
+ xcmd_exec
+ xoff_partial "$xcmd"
+ xreload
+}
+
+
+# run
 
 case $cmd in 
     #xrra)        xrra $@ ;;
     #xrrx)        xrrx $@ ;;
-    o|off)         _xrroff ;;
-    i|init)        _xinit ;;
-    r|reload)      _xreload ;;
-    x|xr)          _xrra $@ ;;
-    f|xrm_fix)     _xrm_fix ;;
+    o|off)        xrroff ;;
+    xset)         xsetx ;;
+    i|init)       xinit ;;
+    r|reload)     xreload ;;
+    x|xr)         xrra $@ ;;
+    f|xrm_fix)    xrm_fix ;;
 esac
 
-exit
 
-# archive ################################
+# archive
+exit
 xrandr --output VGA-1 --primary --auto --output LVDS-1 --off --auto
 xrandr --output LVDS-1 --primary --auto --output VGA-1 --off
 
