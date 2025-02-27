@@ -1,63 +1,57 @@
 #!/bin/env bash
-# ====================================
-# AUTHOR: IAROM MADDEN future@iarom.org
-# 	- Setting X color/theme settings
-# 	- Testing colors
-# =======================================
+
+# IAROM MADDEN future@iarom.org
+# setting x colors
+# testing term colors
 
 cmd=$1 && shift 1
 
 
 col_set() {
-
-	fil="$1"
-	printf "#include \"X11/col/$fil\"" > $HOME/.config/X11/col.set
-	xrdb -I${XDG_CONFIG_HOME:-$HOME} .config/X11/xresources ;}
-
-
-
-
-# COLOR TESTING #######################
+    fil="$1"
+    printf "#include \"X11/col/$fil\"" > $HOME/.config/X11/col-set
+    xrdb -I${XDG_CONFIG_HOME:-$HOME} .config/X11/xresources
+}
 
 
 spaceinvade() {
-	#
-	# ANSI color scheme script featuring Space Invaders
-	#
-	# Original: http://crunchbang.org/forums/viewtopic.php?pid=126921%23p126921#p126921
-	# Modified by lolilolicon
-	#
-	
-	f=3 b=4
-	for j in f b; do
-	  for i in {0..7}; do
-	    printf -v $j$i %b "\e[${!j}${i}m"
-	  done
-	done
-	bld=$'\e[1m'
-	rst=$'\e[0m'
-	
-	cat << EOF
-	
-	 $f1  ▀▄   ▄▀     $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4  ▀▄   ▄▀     $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
-	 $f1 ▄█▀███▀█▄    $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4 ▄█▀███▀█▄    $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
-	 $f1█▀███████▀█   $f2▀▀███▀▀███▀▀   $f3▀█▀██▀█▀   $f4█▀███████▀█   $f5▀▀███▀▀███▀▀   $f6▀█▀██▀█▀$rst
-	 $f1▀ ▀▄▄ ▄▄▀ ▀   $f2 ▀█▄ ▀▀ ▄█▀    $f3▀▄    ▄▀   $f4▀ ▀▄▄ ▄▄▀ ▀   $f5 ▀█▄ ▀▀ ▄█▀    $f6▀▄    ▄▀$rst
-	
-	 $bld$f1▄ ▀▄   ▄▀ ▄   $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4▄ ▀▄   ▄▀ ▄   $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
-	 $bld$f1█▄█▀███▀█▄█   $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4█▄█▀███▀█▄█   $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
-	 $bld$f1▀█████████▀   $f2▀▀▀██▀▀██▀▀▀   $f3▀▀█▀▀█▀▀   $f4▀█████████▀   $f5▀▀▀██▀▀██▀▀▀   $f6▀▀█▀▀█▀▀$rst
-	 $bld$f1 ▄▀     ▀▄    $f2▄▄▀▀ ▀▀ ▀▀▄▄   $f3▄▀▄▀▀▄▀▄   $f4 ▄▀     ▀▄    $f5▄▄▀▀ ▀▀ ▀▀▄▄   $f6▄▀▄▀▀▄▀▄$rst
-	
-	
-	                                     $f7▌$rst
+    # COLOR TESTING
+    # ANSI color scheme featuring Space Invaders
+    #
+    # Original: http://crunchbang.org/forums/viewtopic.php?pid=126921%23p126921#p126921
+    # Modified by lolilolicon
+    #
+    
+    f=3 b=4
+    for j in f b; do
+      for i in {0..7}; do
+        printf -v $j$i %b "\e[${!j}${i}m"
+      done
+    done
+    bld=$'\e[1m'
+    rst=$'\e[0m'
+    
+    cat << EOF
+    
+     $f1  ▀▄   ▄▀     $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4  ▀▄   ▄▀     $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
+     $f1 ▄█▀███▀█▄    $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4 ▄█▀███▀█▄    $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
+     $f1█▀███████▀█   $f2▀▀███▀▀███▀▀   $f3▀█▀██▀█▀   $f4█▀███████▀█   $f5▀▀███▀▀███▀▀   $f6▀█▀██▀█▀$rst
+     $f1▀ ▀▄▄ ▄▄▀ ▀   $f2 ▀█▄ ▀▀ ▄█▀    $f3▀▄    ▄▀   $f4▀ ▀▄▄ ▄▄▀ ▀   $f5 ▀█▄ ▀▀ ▄█▀    $f6▀▄    ▄▀$rst
+    
+     $bld$f1▄ ▀▄   ▄▀ ▄   $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4▄ ▀▄   ▄▀ ▄   $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
+     $bld$f1█▄█▀███▀█▄█   $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4█▄█▀███▀█▄█   $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
+     $bld$f1▀█████████▀   $f2▀▀▀██▀▀██▀▀▀   $f3▀▀█▀▀█▀▀   $f4▀█████████▀   $f5▀▀▀██▀▀██▀▀▀   $f6▀▀█▀▀█▀▀$rst
+     $bld$f1 ▄▀     ▀▄    $f2▄▄▀▀ ▀▀ ▀▀▄▄   $f3▄▀▄▀▀▄▀▄   $f4 ▄▀     ▀▄    $f5▄▄▀▀ ▀▀ ▀▀▄▄   $f6▄▀▄▀▀▄▀▄$rst
+    
+    
+                                         $f7▌$rst
 
-	                                   $f7▌$rst
-	
-	                              $f7    ▄█▄    $rst
-	                              $f7▄█████████▄$rst
-	                              $f7▀▀▀▀▀▀▀▀▀▀▀$rst
-	
+                                       $f7▌$rst
+    
+                                  $f7    ▄█▄    $rst
+                                  $f7▄█████████▄$rst
+                                  $f7▀▀▀▀▀▀▀▀▀▀▀$rst
+    
 EOF
 
 }
@@ -65,15 +59,12 @@ EOF
 
 full256() {
 
-	(x=`tput op` y=`printf %76s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done)
+    (x=`tput op` y=`printf %76s`;for i in {0..256};do o=00$i;echo -e ${o:${#o}-3:3} `tput setaf $i;tput setab $i`${y// /=}$x;done)
 }
 
 
-# CASES #############################
-
 case $cmd in
-	spaceinvade) spaceinvade ;;
-	256)         full256 ;;
+    spaceinvade) spaceinvade ;;
+    256)         full256 ;;
     set)         col_set $@ ;;
 esac
-

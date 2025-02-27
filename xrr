@@ -1,13 +1,11 @@
 #!/bin/env bash
 
-cmd=$1
+cmd=${1}
 shift 1
-
-# VARS ######################################
 
 winman="i3s"
 
-xlist=( 
+xlist=(
   "eDP-1"
   "DP-2"
   "DP-2-2"
@@ -23,89 +21,98 @@ xlist=(
 
 xlist_connected="$(xrandr | grep " connected" | cut -d" " -f1)"
 
+pr_active()        { xrandr --listactivemonitors; }
 
+pr_autor()         { autorandr --current; }
 
-pr_active()    { xrandr --listactivemonitors; }
+xoff()             { xrandr --output ${1} --off; }
 
-pr_autor()     { autorandr --current; }
+xoff_lp()          { for disp in ${1}; do xoff ${disp}; done }
 
+xoff_lp_all()      { for disp in ${xlist_connected}; do xoff ${disp}; done }
 
-
-xoff()             { xrandr --output $1 --off; }
-
-xoff_lp()          { for disp in $1; do xoff $disp; done }
-
-xoff_lp_all()      { for disp in $xlist_connected; do xoff $disp; done }
-
-xoff_lp_partial()  { for disp in ${xlist_off[@]}; do xoff $disp; done }
+xoff_lp_partial()  { for disp in ${xlist_off[@]}; do xoff ${disp}; done }
 
 xoff_set_partial() {
-    for i in $xlist_connected; do 
-        [ -n "$(echo "$@" | grep " $i")" ] \
-            || { xlist_off+=("$i"); }
-    done }
+    for i in ${xlist_connected}; do
+        [ -n "$(echo "${@}" | grep " ${i}")" ] \
+            || { xlist_off+=("${i}"); }
+    done
+}
 
-xoff_partial()     { xoff_set_partial "$@"; xoff_lp_partial; }
-  
-xsetx()            { xset r rate 120 120 & }
+xoff_partial()     { xoff_set_partial "${@}"; xoff_lp_partial; }
+
+xsetx() {
+    case ${1} in
+        a) xset r rate 90 150 ;;
+        b) xset r rate 100 100 ;;
+        c) xset r rate 120 100 ;;
+        d) xset r rate 120 120 ;;
+        e) xset r rate 150 90 ;;
+        f) xset r rate 200 50 ;;
+    esac
+}
+
+xsety()            { xsetx d & }
 
 # reload
 
 xinit() {
     # todo: add i3 conditional statement
     feh --no-fehbg --bg-max "${BGX_FEH}" &
-    xsetx
-  
+    xsety
     notify-send -i display \
         "x setup:" "autorandr: $(pr_autor) \nxrandr:\n $(pr_active)" &
 }
 
 xreload() {
     xinit
-    $winman r # resize wins
+    ${winman} r # resize wins
 }
 
 
 # modes
 
 # NOTE: dissapearing modelines previously have been associated with cable issues
-#   - Re-attaching the cable restablishes the correct default modelines
-#   - Or, try a power off on the dock?
+# - Re-attaching the cable restablishes the correct default modelines
+# - Or, try a power off on the dock?
 
 # to generate modeline for eg 1920x1080 @ 60 : 'cvt 1920 1080 60'
 
 xrm_1920_1080_65() {
-   xrandr --newmode "1920x1080_65.00" 188.87  \
+    xrandr --newmode "1920x1080_65.00" 188.87  \
          1920 2048 2256 2592  \
          1080 1081 1084 1121 -HSync +Vsync
 }
 
 xrm_1920_1080_60() { #outp="DP-2"
-   xrandr --newmode "1920x1080_60.00" 172.80 \
+    xrandr --newmode "1920x1080_60.00" 172.80 \
          1920 2040 2248 2576 \
          1080 1081 1084 1118 -HSync +Vsync
 }
 
 xrm_add_dp-2-3() {
-  xrandr --addmode DP-2-3 "1920x1080_60.00"
-  xrandr --output DP-2-3 --mode "1920x1080_60.00"
+    xrandr --addmode DP-2-3 "1920x1080_60.00"
+    xrandr --output DP-2-3 --mode "1920x1080_60.00"
 }
 
 xrm_add_dp-2() {
-  #xrandr --addmode DP-2 "1920x1080_60.00"
-  xrandr --addmode DP-2 "1024x768_60.00"
-  xrandr --output DP-2 --mode "1024x768_60.00"
+    #xrandr --addmode DP-2 "1920x1080_60.00"
+    xrandr --addmode DP-2 "1024x768_60.00"
+    xrandr --output DP-2 --mode "1024x768_60.00"
 }
 
 xrm_fix_2() {
- xrm_1920_1080_60
- xrm_1920_1080_65
- xrm_add_dp-2-3 ;}
+    xrm_1920_1080_60
+    xrm_1920_1080_65
+    xrm_add_dp-2-3
+}
 
 xrm_fix() {
- xrm_1920_1080_60
- xrm_1920_1080_65
- xrm_add_dp-2 ;}
+    xrm_1920_1080_60
+    xrm_1920_1080_65
+    xrm_add_dp-2
+}
  
 #xrm_add_() { --addmode $outp $reso ;}
 
@@ -152,7 +159,7 @@ init_defs() {
   h1p_e1r=(
     "${h1[@]}"      "--primary"
     "${e1[@]}"      "--right-of")
-  #23 -22 - ...  #######################
+  #23 -22 - ...  
   d_23__d_22p=(
     "${d_23[@]}"    "--left-of"  "DP-2-2"
     "${d_22[@]}"    "--primary")
@@ -163,18 +170,18 @@ init_defs() {
     "${d_23[@]}"    "--primary"
     "${d_22[@]}"    "--right-of"  "DP-2-3"
     "${e1[@]}"      "--below"     "DP-2-2")
-  #22 -23 - ... ######################
+  #22 -23 - ... 
   d_22p__d_23=(  
     "${d_22[@]}"    "--primay"
     "${d_23[@]}"    "--right-of")
-  #22 -1 - ... #######################
+  #22 -1 - ... 
   d_22r__d_1p=(
     "${d_22r[@]}"   "--left-of"  "DP-1"
     "${d_1[@]}"     "--primary")
   d_22r__d_1p__d_22r=(
     "${d_22r__d_1p[@]}"
     "${d_23r[@]}"  "--right-of" "DP-1")
-  #1 -23 - .... ########################
+  #1 -23 - .... 
   d_1pr__d_23r=(  # 2 rot
     "${d_1r[@]}"    "--primary"
     "${d_23r[@]}"   "--right-of" "DP-1")
@@ -187,35 +194,36 @@ init_defs() {
 # cmds
 
 xcmd_set() {
- init_defs
-  eval "args=(\"\${${1}[@]}\")"
-  xcmd="xrandr ${args[@]}";}
+    init_defs
+    eval "args=(\"\${${1}[@]}\")"
+    xcmd="xrandr ${args[@]}"
+}
 
-xcmd_exec() { $xcmd; }
+xcmd_exec() { ${xcmd}; }
 
-xrra() { # $1 is cmd seq
- xcmd_set $1
- xcmd_exec
- xoff_partial "$xcmd"
- xreload
+xrra() {
+    xcmd_set ${1}
+    xcmd_exec
+    xoff_partial "${xcmd}"
+    xreload
 }
 
 
 # run
 
-case $cmd in 
+case ${cmd} in
     #xrra)        xrra $@ ;;
     #xrrx)        xrrx $@ ;;
     o|off)        xrroff ;;
-    xset)         xsetx ;;
+    xset)         xsetx ${1} ;;
     i|init)       xinit ;;
     r|reload)     xreload ;;
-    x|xr)         xrra $@ ;;
+    x|xr)         xrra ${@} ;;
     f|xrm_fix)    xrm_fix ;;
 esac
 
-
 # archive
+
 exit
 xrandr --output VGA-1 --primary --auto --output LVDS-1 --off --auto
 xrandr --output LVDS-1 --primary --auto --output VGA-1 --off
