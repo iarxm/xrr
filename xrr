@@ -216,6 +216,7 @@ case ${cmd} in
     #xrrx)        xrrx $@ ;;
     o|off)        xrroff ;;
     xset)         xsetx ${1} ;;
+    xseta)        xsety ;;
     i|init)       xinit ;;
     r|reload)     xreload ;;
     x|xr)         xrra ${@} ;;
