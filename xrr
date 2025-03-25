@@ -101,7 +101,9 @@ xiniy()
 xreload()
 {
     xiniy
-    ${winman} r # resize wins
+    if pgrep i3; then
+        ${winman} r # resize wins
+    fi
 }
 
 # modes
