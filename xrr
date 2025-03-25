@@ -247,20 +247,19 @@ xrra()
 }
 
 
-_main()
+main()
 {
-case ${cmd} in
-    #xrra)        xrra $@ ;;
-    #xrrx)        xrrx $@ ;;
-    o|off)        xrroff ;;
-    xset)         xsetx ${1} ;;
-    xseta)        xsety ;;
-    i|init)       xiniy ;;
-    r|reload)     xreload ;;
-    x|xr)         xrra ${@} ;;
-    f|xrm_fix)    xrm_fix ;;
-esac
+    case ${cmd} in
+        #xrra)        xrra $@ ;;
+        #xrrx)        xrrx $@ ;;
+        o|off)        xrroff ;;
+        xset)         xsetx ${1} ;;
+        xseta)        xsety ;;
+        i|init)       xiniy ;;
+        r|reload)     xreload ;;
+        x|xr)         xrra ${@} ;;
+        f|xrm_fix)    xrm_fix ;;
+    esac
 }
 
-_main "${@}"
-
+main "${@}"
