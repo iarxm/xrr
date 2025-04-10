@@ -249,7 +249,6 @@ xrra()
     xreload
 }
 
-
 main()
 {
     cmd=${1}
