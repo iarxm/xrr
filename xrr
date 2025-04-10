@@ -66,6 +66,7 @@ xoff_partial() { xoff_set_partial "${@}"; xoff_lp_partial; }
 xsetx()
 {
     case ${1} in
+        x) xset r rate 70 150 ;;
         a) xset r rate 90 150 ;;
         b) xset r rate 100 100 ;;
         c) xset r rate 120 100 ;;
