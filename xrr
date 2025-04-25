@@ -66,13 +66,17 @@ xoff_partial() { xoff_set_partial "${@}"; xoff_lp_partial; }
 xsetx()
 {
     case ${1} in
-        x) xset r rate 70 150 ;;
-        a) xset r rate 90 150 ;;
-        b) xset r rate 100 100 ;;
-        c) xset r rate 120 100 ;;
-        d) xset r rate 120 120 ;;
-        e) xset r rate 150 90 ;;
-        f) xset r rate 200 50 ;;
+        ## performance configs
+        a) xset r rate 70 150 ;;
+        b) xset r rate 75 150 ;;
+        c) xset r rate 80 150 ;;
+        d) xset r rate 90 150 ;;
+        ## easy
+        l) xset r rate 100 100 ;;
+        m) xset r rate 120 100 ;;
+        n) xset r rate 120 120 ;;
+        o) xset r rate 150 90 ;;
+        p) xset r rate 200 50 ;;
     esac
 }
 
