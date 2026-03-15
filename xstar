@@ -215,8 +215,7 @@ EOF
 
 execxinit()
 {
-    exec $xinit "$client" $clientargs -- "$server" $display $serverargs"
-    retval=$?
+    exec $xinit "$client" $clientargs -- "$server" $display $serverargs
 }
 
 cleanup()
@@ -240,13 +239,14 @@ cleanup()
     if [ "$(uname -s)" = "SunOS" ]; then
         kbd_mode -a
     fi
-    exit $retval
 }
 
 setupdisplay
-setupclientserver
+setupclientserver $1
 setupclientargs
 setupserverargs
 setupxauth
 execxinit
+retval=$?
 cleanup
+exit $retval
