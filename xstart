@@ -292,8 +292,7 @@ CYGWIN_NT*|Darwin)
     eval $xinit \"$client\" $clientargs -- \"$server\" $display $serverargs
     ;;
 *)
-    echo "exec $xinit "$client" $clientargs -- "$server" $display $serverargs"
-    exit
+    exec $xinit "$client" $clientargs -- "$server" $display $serverargs
     ;;
 esac
 retval=$?
