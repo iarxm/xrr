@@ -6,7 +6,7 @@ all:
 
 install:
 	install -d $(BINDIR)
-	install -m 755 xrr xres xstart $(BINDIR)
+	install -m 755 xrr xres xstart xstar $(BINDIR)
 
 install-user:
 	$(MAKE) install PREFIX="${HOME}/.local/usr/bin"

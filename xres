@@ -1,7 +1,5 @@
 #!/bin/env bash
-
 # iarom mail@iarom.org
-
 # setting x colors
 # testing term colors
 
@@ -18,7 +16,6 @@ spaceinvade()
 {
     # COLOR TESTING
     # ANSI color scheme featuring Space Invaders
-    #
     # Original: http://crunchbang.org/forums/viewtopic.php?pid=126921%23p126921#p126921
     # Modified by lolilolicon
     
