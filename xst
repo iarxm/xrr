@@ -13,10 +13,10 @@ mk_cookie=/usr/bin/mcookie
 has_cookie_maker=1
 unset SESSION_MANAGER
 
-userclientrc=$HOME/.xinitrc
+userclientrc=$HOME/.config/X11/xinitrc
 [ -f "${XINITRC}" ] && userclientrc="${XINITRC}"
 sysclientrc=/etc/X11/xinit/xinitrc
-userserverrc=$HOME/.xserverrc
+userserverrc=$HOME/.config/X11/.xserverrc
 [ -f "${XSERVERRC}" ] && userserverrc="${XSERVERRC}"
 sysserverrc=$xinitdir/xserverrc
 defaultclient=$xterm
